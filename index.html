@@ -550,6 +550,77 @@
     font-size: 15px;
   }
   .empty-cart span { font-size: 40px; display: block; margin-bottom: 10px; }
+
+  /* SIZE PICKER */
+  .size-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 3000;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .size-overlay.active { display: flex; }
+  .size-sheet {
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px 36px;
+    width: 100%;
+    max-width: 500px;
+    animation: slideUpSheet 0.3s ease;
+  }
+  @keyframes slideUpSheet {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .size-sheet h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .size-sheet p {
+    font-size: 13px;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .size-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .size-opt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Tajawal', sans-serif;
+    width: 100%;
+  }
+  .size-opt:hover { border-color: var(--red); background: #fff5f5; }
+  .size-opt-name { font-size: 16px; font-weight: 700; color: var(--text); }
+  .size-opt-price { font-size: 18px; font-weight: 900; color: var(--red); }
+  .size-cancel {
+    width: 100%;
+    margin-top: 12px;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #888;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+  }
 </style>
 </head>
 <body>
@@ -584,27 +655,27 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>صغير</th><th>وسط</th><th>كبير</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>عجينة طعمية</td><td>18</td><td>26</td><td>40</td><td><button class="add-btn" onclick="addItem('عجينة طعمية',40)">+</button></td></tr>
-      <tr><td>فول سادة</td><td>18</td><td>26</td><td>40</td><td><button class="add-btn" onclick="addItem('فول سادة',40)">+</button></td></tr>
-      <tr><td>فول زيت حار</td><td>20</td><td>30</td><td>40</td><td><button class="add-btn" onclick="addItem('فول زيت حار',40)">+</button></td></tr>
-      <tr><td>فول محوج</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItem('فول محوج',42)">+</button></td></tr>
-      <tr><td>فول بالصلصة</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItem('فول بالصلصة',42)">+</button></td></tr>
-      <tr><td>فول بالزبدة</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItem('فول بالزبدة',42)">+</button></td></tr>
-      <tr><td>فول زيتون</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItem('فول زيتون',42)">+</button></td></tr>
+      <tr><td>عجينة طعمية</td><td>18</td><td>26</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('عجينة طعمية',[{label:'صغير',price:18},{label:'وسط',price:26},{label:'كبير',price:40}])">+</button></td></tr>
+      <tr><td>فول سادة</td><td>18</td><td>26</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('فول سادة',[{label:'صغير',price:18},{label:'وسط',price:26},{label:'كبير',price:40}])">+</button></td></tr>
+      <tr><td>فول زيت حار</td><td>20</td><td>30</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('فول زيت حار',[{label:'صغير',price:20},{label:'وسط',price:30},{label:'كبير',price:40}])">+</button></td></tr>
+      <tr><td>فول محوج</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItemSizes('فول محوج',[{label:'صغير',price:20},{label:'وسط',price:30},{label:'كبير',price:42}])">+</button></td></tr>
+      <tr><td>فول بالصلصة</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItemSizes('فول بالصلصة',[{label:'صغير',price:20},{label:'وسط',price:30},{label:'كبير',price:42}])">+</button></td></tr>
+      <tr><td>فول بالزبدة</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItemSizes('فول بالزبدة',[{label:'صغير',price:20},{label:'وسط',price:30},{label:'كبير',price:42}])">+</button></td></tr>
+      <tr><td>فول زيتون</td><td>20</td><td>30</td><td>42</td><td><button class="add-btn" onclick="addItemSizes('فول زيتون',[{label:'صغير',price:20},{label:'وسط',price:30},{label:'كبير',price:42}])">+</button></td></tr>
       <tr><td class="highlight">فول البركة</td><td>-</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('فول البركة',0)">+</button></td></tr>
-      <tr><td>فول اسكندراني</td><td>20</td><td>29</td><td>44</td><td><button class="add-btn" onclick="addItem('فول اسكندراني',44)">+</button></td></tr>
-      <tr><td>فول بالبيض السلوق</td><td>23</td><td>35</td><td>50</td><td><button class="add-btn" onclick="addItem('فول بالبيض السلوق',50)">+</button></td></tr>
-      <tr><td>فول بالسجق</td><td>23</td><td>37</td><td>60</td><td><button class="add-btn" onclick="addItem('فول بالسجق',60)">+</button></td></tr>
-      <tr><td>جبنة قبتا</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItem('جبنة قبتا',40)">+</button></td></tr>
-      <tr><td>جبنة قديمة</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItem('جبنة قديمة',40)">+</button></td></tr>
-      <tr><td>بابا غنوج</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItem('بابا غنوج',40)">+</button></td></tr>
+      <tr><td>فول اسكندراني</td><td>20</td><td>29</td><td>44</td><td><button class="add-btn" onclick="addItemSizes('فول اسكندراني',[{label:'صغير',price:20},{label:'وسط',price:29},{label:'كبير',price:44}])">+</button></td></tr>
+      <tr><td>فول بالبيض السلوق</td><td>23</td><td>35</td><td>50</td><td><button class="add-btn" onclick="addItemSizes('فول بالبيض السلوق',[{label:'صغير',price:23},{label:'وسط',price:35},{label:'كبير',price:50}])">+</button></td></tr>
+      <tr><td>فول بالسجق</td><td>23</td><td>37</td><td>60</td><td><button class="add-btn" onclick="addItemSizes('فول بالسجق',[{label:'صغير',price:23},{label:'وسط',price:37},{label:'كبير',price:60}])">+</button></td></tr>
+      <tr><td>جبنة قبتا</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('جبنة قبتا',[{label:'صغير',price:15},{label:'كبير',price:40}])">+</button></td></tr>
+      <tr><td>جبنة قديمة</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('جبنة قديمة',[{label:'صغير',price:15},{label:'كبير',price:40}])">+</button></td></tr>
+      <tr><td>بابا غنوج</td><td>15</td><td>-</td><td>40</td><td><button class="add-btn" onclick="addItemSizes('بابا غنوج',[{label:'صغير',price:15},{label:'كبير',price:40}])">+</button></td></tr>
       <tr><td>شكشوكة</td><td>-</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('شكشوكة',0)">+</button></td></tr>
       <tr><td>مسقعة</td><td>-</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('مسقعة',0)">+</button></td></tr>
-      <tr><td>بطاطس مهروسة</td><td>15</td><td>30</td><td>50</td><td><button class="add-btn" onclick="addItem('بطاطس مهروسة',50)">+</button></td></tr>
-      <tr><td>طبق البيض الأوملايت</td><td>20</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItem('طبق البيض الأوملايت',30)">+</button></td></tr>
+      <tr><td>بطاطس مهروسة</td><td>15</td><td>30</td><td>50</td><td><button class="add-btn" onclick="addItemSizes('بطاطس مهروسة',[{label:'صغير',price:15},{label:'وسط',price:30},{label:'كبير',price:50}])">+</button></td></tr>
+      <tr><td>طبق البيض الأوملايت</td><td>20</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('طبق البيض الأوملايت',[{label:'صغير',price:20},{label:'وسط',price:30}])">+</button></td></tr>
       <tr><td>طبق شيبسي</td><td>15</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('طبق شيبسي',15)">+</button></td></tr>
       <tr><td>طبق صوايع كاتشب</td><td>20</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('طبق صوايع كاتشب',20)">+</button></td></tr>
-      <tr><td>طبق صوايع كاتشب ومايونيز</td><td>21</td><td>26</td><td>-</td><td><button class="add-btn" onclick="addItem('طبق صوايع كاتشب ومايونيز',26)">+</button></td></tr>
+      <tr><td>طبق صوايع كاتشب ومايونيز</td><td>21</td><td>26</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('طبق صوايع كاتشب ومايونيز',[{label:'صغير',price:21},{label:'وسط',price:26}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -649,13 +720,13 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>صغير</th><th>وسط</th><th>كبير</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>ليمون مخلل</td><td>10</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('ليمون مخلل',10)">+</button></td></tr>
-      <tr><td>طحينة</td><td>10</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('طحينة',10)">+</button></td></tr>
-      <tr><td>سلطة بلدي</td><td>12</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItem('سلطة بلدي',12)">+</button></td></tr>
-      <tr><td>طرشي بلدي</td><td>7</td><td>15</td><td>-</td><td><button class="add-btn" onclick="addItem('طرشي بلدي',7)">+</button></td></tr>
+      <tr><td>ليمون مخلل</td><td>10</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('ليمون مخلل',[{label:'صغير',price:10},{label:'وسط',price:20}])">+</button></td></tr>
+      <tr><td>طحينة</td><td>10</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('طحينة',[{label:'صغير',price:10},{label:'وسط',price:20}])">+</button></td></tr>
+      <tr><td>سلطة بلدي</td><td>12</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سلطة بلدي',[{label:'صغير',price:12},{label:'وسط',price:30}])">+</button></td></tr>
+      <tr><td>طرشي بلدي</td><td>7</td><td>15</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('طرشي بلدي',[{label:'صغير',price:7},{label:'وسط',price:15}])">+</button></td></tr>
       <tr><td>طبق طماطم وخيار وفلفل</td><td>-</td><td>15</td><td>-</td><td><button class="add-btn" onclick="addItem('طبق طماطم وخيار وفلفل',15)">+</button></td></tr>
       <tr><td>باذنجان (مخلل - مقلي)</td><td>-</td><td>18</td><td>-</td><td><button class="add-btn" onclick="addItem('باذنجان مخلل/مقلي',18)">+</button></td></tr>
-      <tr><td>طبق خيار مخلل</td><td>-</td><td>23</td><td>26</td><td><button class="add-btn" onclick="addItem('طبق خيار مخلل',23)">+</button></td></tr>
+      <tr><td>طبق خيار مخلل</td><td>-</td><td>23</td><td>26</td><td><button class="add-btn" onclick="addItemSizes('طبق خيار مخلل',[{label:'وسط',price:23},{label:'كبير',price:26}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -668,16 +739,16 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>شامي</th><th>بلدي</th><th>فينو</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td class="highlight">فول البركة</td><td>11</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول البركة',11)">+</button></td></tr>
-      <tr><td>فول سادة</td><td>11</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول سادة',11)">+</button></td></tr>
-      <tr><td>فول اسكندراني</td><td>14</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItem('سندوتش فول اسكندراني',14)">+</button></td></tr>
-      <tr><td>فول صالح</td><td>13</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول صالح',13)">+</button></td></tr>
-      <tr><td>فول زيت زيتون</td><td>13</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول زيت زيتون',13)">+</button></td></tr>
-      <tr><td>فول بالفاصل</td><td>13</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول بالفاصل',13)">+</button></td></tr>
-      <tr><td>فول على باذنجان</td><td>16</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول على باذنجان',16)">+</button></td></tr>
-      <tr><td>فول بابا غنوج</td><td>16</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول بابا غنوج',16)">+</button></td></tr>
-      <tr><td>فول أوملايت</td><td>-</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول أوملايت',21)">+</button></td></tr>
-      <tr><td>فول بليمون مصفر</td><td>15</td><td>15</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول بليمون مصفر',15)">+</button></td></tr>
+      <tr><td class="highlight">فول البركة</td><td>11</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول البركة - شامي',11)">+</button></td></tr>
+      <tr><td>فول سادة</td><td>11</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول سادة - شامي',11)">+</button></td></tr>
+      <tr><td>فول اسكندراني</td><td>14</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItemSizes('سندوتش فول اسكندراني',[{label:'شامي',price:14},{label:'بلدي',price:20},{label:'فينو',price:23}])">+</button></td></tr>
+      <tr><td>فول صالح</td><td>13</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش فول صالح',[{label:'شامي',price:13},{label:'بلدي',price:16}])">+</button></td></tr>
+      <tr><td>فول زيت زيتون</td><td>13</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش فول زيت زيتون',[{label:'شامي',price:13},{label:'بلدي',price:16}])">+</button></td></tr>
+      <tr><td>فول بالفاصل</td><td>13</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول بالفاصل - شامي',13)">+</button></td></tr>
+      <tr><td>فول على باذنجان</td><td>16</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول على باذنجان - شامي',16)">+</button></td></tr>
+      <tr><td>فول بابا غنوج</td><td>16</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش فول بابا غنوج',[{label:'شامي',price:16},{label:'بلدي',price:21}])">+</button></td></tr>
+      <tr><td>فول أوملايت</td><td>-</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش فول أوملايت - بلدي',21)">+</button></td></tr>
+      <tr><td>فول بليمون مصفر</td><td>15</td><td>15</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش فول بليمون مصفر',[{label:'شامي',price:15},{label:'بلدي',price:15}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -688,15 +759,15 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>شامي</th><th>بلدي</th><th>فينو</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>طعمية</td><td>11</td><td>13</td><td>13</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية',11)">+</button></td></tr>
-      <tr><td>طعمية ميكس</td><td>-</td><td>14</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية ميكس',14)">+</button></td></tr>
-      <tr><td>طعمية محشية على فول</td><td>-</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية محشية على فول',16)">+</button></td></tr>
-      <tr><td>طعمية على بابا غنوج</td><td>-</td><td>16</td><td>16</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية على بابا غنوج',16)">+</button></td></tr>
-      <tr><td>طعمية على جبنة قديمة</td><td>-</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية على جبنة قديمة',16)">+</button></td></tr>
-      <tr><td>طعمية على أوملايت</td><td>-</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية على أوملايت',20)">+</button></td></tr>
-      <tr><td>طعمية جبنة موتزاريلا</td><td>-</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية جبنة موتزاريلا',21)">+</button></td></tr>
-      <tr><td>طعمية جبنة رومي</td><td>-</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية جبنة رومي',20)">+</button></td></tr>
-      <tr><td>طعمية جبنة بسطرمة</td><td>-</td><td>25</td><td>25</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية جبنة بسطرمة',25)">+</button></td></tr>
+      <tr><td>طعمية</td><td>11</td><td>13</td><td>13</td><td><button class="add-btn" onclick="addItemSizes('سندوتش طعمية',[{label:'شامي',price:11},{label:'بلدي',price:13},{label:'فينو',price:13}])">+</button></td></tr>
+      <tr><td>طعمية ميكس</td><td>-</td><td>14</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية ميكس - بلدي',14)">+</button></td></tr>
+      <tr><td>طعمية محشية على فول</td><td>-</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية محشية على فول - بلدي',16)">+</button></td></tr>
+      <tr><td>طعمية على بابا غنوج</td><td>-</td><td>16</td><td>16</td><td><button class="add-btn" onclick="addItemSizes('سندوتش طعمية على بابا غنوج',[{label:'بلدي',price:16},{label:'فينو',price:16}])">+</button></td></tr>
+      <tr><td>طعمية على جبنة قديمة</td><td>-</td><td>16</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية على جبنة قديمة - بلدي',16)">+</button></td></tr>
+      <tr><td>طعمية على أوملايت</td><td>-</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية على أوملايت - بلدي',20)">+</button></td></tr>
+      <tr><td>طعمية جبنة موتزاريلا</td><td>-</td><td>21</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية جبنة موتزاريلا - بلدي',21)">+</button></td></tr>
+      <tr><td>طعمية جبنة رومي</td><td>-</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش طعمية جبنة رومي - بلدي',20)">+</button></td></tr>
+      <tr><td>طعمية جبنة بسطرمة</td><td>-</td><td>25</td><td>25</td><td><button class="add-btn" onclick="addItemSizes('سندوتش طعمية جبنة بسطرمة',[{label:'بلدي',price:25},{label:'فينو',price:25}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -707,22 +778,22 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>شامي</th><th>بلدي</th><th>فينو</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>بطاطس صوايع</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس صوايع',15)">+</button></td></tr>
-      <tr><td>بطاطس شيبسي</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس شيبسي',15)">+</button></td></tr>
-      <tr><td>بطاطس جامبو</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس جامبو',15)">+</button></td></tr>
-      <tr><td>بطاطس كاتشب</td><td>15</td><td>18</td><td>21</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس كاتشب',15)">+</button></td></tr>
-      <tr><td>بطاطس مايونيز</td><td>15</td><td>18</td><td>21</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس مايونيز',15)">+</button></td></tr>
-      <tr><td>بطاطس كاتشب ومايونيز</td><td>17</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس كاتشب ومايونيز',17)">+</button></td></tr>
-      <tr><td>بطاطس على باذنجان</td><td>17</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس على باذنجان',17)">+</button></td></tr>
-      <tr><td>بطاطس شيدر</td><td>22</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس شيدر',22)">+</button></td></tr>
-      <tr><td>بطاطس رومي</td><td>22</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس رومي',22)">+</button></td></tr>
-      <tr><td>بطاطس موتزاريلا</td><td>25</td><td>28</td><td>33</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس موتزاريلا',25)">+</button></td></tr>
-      <tr><td>بطاطس بازوكا</td><td>25</td><td>28</td><td>33</td><td><button class="add-btn" onclick="addItem('سندوتش بطاطس بازوكا',25)">+</button></td></tr>
-      <tr><td>مهروسة زبدة</td><td>17</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة زبدة',17)">+</button></td></tr>
-      <tr><td>مهروسة أوملايت</td><td>20</td><td>22</td><td>25</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة أوملايت',20)">+</button></td></tr>
-      <tr><td>مهروسة رومي</td><td>22</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة رومي',22)">+</button></td></tr>
-      <tr><td>مهروسة موتزاريلا</td><td>25</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة موتزاريلا',25)">+</button></td></tr>
-      <tr><td>مهروسة ميكس جن</td><td>30</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة ميكس جن',30)">+</button></td></tr>
+      <tr><td>بطاطس صوايع</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس صوايع',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>بطاطس شيبسي</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس شيبسي',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>بطاطس جامبو</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس جامبو',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>بطاطس كاتشب</td><td>15</td><td>18</td><td>21</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس كاتشب',[{label:'شامي',price:15},{label:'بلدي',price:18},{label:'فينو',price:21}])">+</button></td></tr>
+      <tr><td>بطاطس مايونيز</td><td>15</td><td>18</td><td>21</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس مايونيز',[{label:'شامي',price:15},{label:'بلدي',price:18},{label:'فينو',price:21}])">+</button></td></tr>
+      <tr><td>بطاطس كاتشب ومايونيز</td><td>17</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس كاتشب ومايونيز',[{label:'شامي',price:17},{label:'بلدي',price:20},{label:'فينو',price:23}])">+</button></td></tr>
+      <tr><td>بطاطس على باذنجان</td><td>17</td><td>20</td><td>23</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس على باذنجان',[{label:'شامي',price:17},{label:'بلدي',price:20},{label:'فينو',price:23}])">+</button></td></tr>
+      <tr><td>بطاطس شيدر</td><td>22</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس شيدر',[{label:'شامي',price:22},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>بطاطس رومي</td><td>22</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس رومي',[{label:'شامي',price:22},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>بطاطس موتزاريلا</td><td>25</td><td>28</td><td>33</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس موتزاريلا',[{label:'شامي',price:25},{label:'بلدي',price:28},{label:'فينو',price:33}])">+</button></td></tr>
+      <tr><td>بطاطس بازوكا</td><td>25</td><td>28</td><td>33</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بطاطس بازوكا',[{label:'شامي',price:25},{label:'بلدي',price:28},{label:'فينو',price:33}])">+</button></td></tr>
+      <tr><td>مهروسة زبدة</td><td>17</td><td>20</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش مهروسة زبدة',[{label:'شامي',price:17},{label:'بلدي',price:20}])">+</button></td></tr>
+      <tr><td>مهروسة أوملايت</td><td>20</td><td>22</td><td>25</td><td><button class="add-btn" onclick="addItemSizes('سندوتش مهروسة أوملايت',[{label:'شامي',price:20},{label:'بلدي',price:22},{label:'فينو',price:25}])">+</button></td></tr>
+      <tr><td>مهروسة رومي</td><td>22</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة رومي - شامي',22)">+</button></td></tr>
+      <tr><td>مهروسة موتزاريلا</td><td>25</td><td>-</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش مهروسة موتزاريلا - شامي',25)">+</button></td></tr>
+      <tr><td>مهروسة ميكس جن</td><td>30</td><td>30</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش مهروسة ميكس جن',[{label:'شامي',price:30},{label:'بلدي',price:30}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -733,16 +804,16 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>شامي</th><th>بلدي</th><th>فينو</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>أوملايت سادة</td><td>17</td><td>17</td><td>20</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت سادة',17)">+</button></td></tr>
-      <tr><td>أوملايت سجق</td><td>18</td><td>18</td><td>22</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت سجق',18)">+</button></td></tr>
-      <tr><td>أوملايت سوسيس</td><td>26</td><td>26</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت سوسيس',26)">+</button></td></tr>
-      <tr><td>أوملايت بسطرمة</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت بسطرمة',25)">+</button></td></tr>
-      <tr><td>أوملايت رومي</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت رومي',25)">+</button></td></tr>
-      <tr><td>أوملايت شيدر</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت شيدر',25)">+</button></td></tr>
-      <tr><td>أوملايت موتزاريلا</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت موتزاريلا',25)">+</button></td></tr>
-      <tr><td>أوملايت آباتشي</td><td>27</td><td>27</td><td>30</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت آباتشي',27)">+</button></td></tr>
-      <tr><td>أوملايت ميكس جن</td><td>27</td><td>27</td><td>30</td><td><button class="add-btn" onclick="addItem('سندوتش أوملايت ميكس جن',27)">+</button></td></tr>
-      <tr><td>بيض مسلوق</td><td>16</td><td>16</td><td>19</td><td><button class="add-btn" onclick="addItem('سندوتش بيض مسلوق',16)">+</button></td></tr>
+      <tr><td>أوملايت سادة</td><td>17</td><td>17</td><td>20</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت سادة',[{label:'شامي',price:17},{label:'بلدي',price:17},{label:'فينو',price:20}])">+</button></td></tr>
+      <tr><td>أوملايت سجق</td><td>18</td><td>18</td><td>22</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت سجق',[{label:'شامي',price:18},{label:'بلدي',price:18},{label:'فينو',price:22}])">+</button></td></tr>
+      <tr><td>أوملايت سوسيس</td><td>26</td><td>26</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت سوسيس',[{label:'شامي',price:26},{label:'بلدي',price:26},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>أوملايت بسطرمة</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت بسطرمة',[{label:'شامي',price:25},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>أوملايت رومي</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت رومي',[{label:'شامي',price:25},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>أوملايت شيدر</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت شيدر',[{label:'شامي',price:25},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>أوملايت موتزاريلا</td><td>25</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت موتزاريلا',[{label:'شامي',price:25},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>أوملايت آباتشي</td><td>27</td><td>27</td><td>30</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت آباتشي',[{label:'شامي',price:27},{label:'بلدي',price:27},{label:'فينو',price:30}])">+</button></td></tr>
+      <tr><td>أوملايت ميكس جن</td><td>27</td><td>27</td><td>30</td><td><button class="add-btn" onclick="addItemSizes('سندوتش أوملايت ميكس جن',[{label:'شامي',price:27},{label:'بلدي',price:27},{label:'فينو',price:30}])">+</button></td></tr>
+      <tr><td>بيض مسلوق</td><td>16</td><td>16</td><td>19</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بيض مسلوق',[{label:'شامي',price:16},{label:'بلدي',price:16},{label:'فينو',price:19}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -753,14 +824,14 @@
   <table class="menu-table">
     <thead><tr><th>الصنف</th><th>شامي</th><th>بلدي</th><th>فينو</th><th>اطلب</th></tr></thead>
     <tbody>
-      <tr><td>شكشوكة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش شكشوكة',15)">+</button></td></tr>
-      <tr><td>بابا غنوج</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش بابا غنوج',15)">+</button></td></tr>
-      <tr><td>مسقعة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش مسقعة',15)">+</button></td></tr>
-      <tr><td>مسقعة سجق</td><td>18</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItem('سندوتش مسقعة سجق',18)">+</button></td></tr>
-      <tr><td>عجة فرنساوي</td><td>18</td><td>18</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش عجة فرنساوي',18)">+</button></td></tr>
-      <tr><td>جبنة قديمة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItem('سندوتش جبنة قديمة',15)">+</button></td></tr>
-      <tr><td>جبنة مقلية بطاطس</td><td>29</td><td>32</td><td>-</td><td><button class="add-btn" onclick="addItem('سندوتش جبنة مقلية بطاطس',29)">+</button></td></tr>
-      <tr><td>جبنة مقلية بطاطس جامبو</td><td>33</td><td>35</td><td>37</td><td><button class="add-btn" onclick="addItem('سندوتش جبنة مقلية بطاطس جامبو',33)">+</button></td></tr>
+      <tr><td>شكشوكة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش شكشوكة',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>بابا غنوج</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش بابا غنوج',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>مسقعة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش مسقعة',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>مسقعة سجق</td><td>18</td><td>25</td><td>28</td><td><button class="add-btn" onclick="addItemSizes('سندوتش مسقعة سجق',[{label:'شامي',price:18},{label:'بلدي',price:25},{label:'فينو',price:28}])">+</button></td></tr>
+      <tr><td>عجة فرنساوي</td><td>18</td><td>18</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش عجة فرنساوي',[{label:'شامي',price:18},{label:'بلدي',price:18}])">+</button></td></tr>
+      <tr><td>جبنة قديمة</td><td>15</td><td>15</td><td>18</td><td><button class="add-btn" onclick="addItemSizes('سندوتش جبنة قديمة',[{label:'شامي',price:15},{label:'بلدي',price:15},{label:'فينو',price:18}])">+</button></td></tr>
+      <tr><td>جبنة مقلية بطاطس</td><td>29</td><td>32</td><td>-</td><td><button class="add-btn" onclick="addItemSizes('سندوتش جبنة مقلية بطاطس',[{label:'شامي',price:29},{label:'بلدي',price:32}])">+</button></td></tr>
+      <tr><td>جبنة مقلية بطاطس جامبو</td><td>33</td><td>35</td><td>37</td><td><button class="add-btn" onclick="addItemSizes('سندوتش جبنة مقلية بطاطس جامبو',[{label:'شامي',price:33},{label:'بلدي',price:35},{label:'فينو',price:37}])">+</button></td></tr>
     </tbody>
   </table>
 </div>
@@ -810,6 +881,16 @@
   <br>
   <div class="hours-badge">🕐 خدمة 24 ساعة</div>
   <p style="margin-top:20px; opacity:0.7; font-size:13px;">جميع أنواع السندوتشات • شاورما • لحوم • توصيل للمنازل</p>
+</div>
+
+<!-- SIZE PICKER -->
+<div class="size-overlay" id="sizeOverlay" onclick="closeSizePicker(event)">
+  <div class="size-sheet">
+    <h3 id="sizeItemName">اختار الحجم</h3>
+    <p>اختار الحجم المناسب</p>
+    <div class="size-options" id="sizeOptions"></div>
+    <button class="size-cancel" onclick="closeSizePickerDirect()">إلغاء</button>
+  </div>
 </div>
 
 <!-- FLOATING CART BUTTON -->
@@ -967,7 +1048,44 @@ function sendTelegram(text) {
 
 // ===== CART =====
 function addItem(name, price) {
+  // لو سعر واحد بس - ضيف مباشرة
   const btn = event.target;
+  doAddItem(name, price, btn);
+}
+
+function addItemSizes(name, sizes) {
+  // sizes = [{label:'صغير', price:18}, {label:'وسط', price:26}, {label:'كبير', price:40}]
+  const validSizes = sizes.filter(s => s.price > 0);
+  if (validSizes.length === 1) {
+    doAddItem(name + ' - ' + validSizes[0].label, validSizes[0].price, event.target);
+    return;
+  }
+  // فتح picker
+  document.getElementById('sizeItemName').textContent = name;
+  const opts = document.getElementById('sizeOptions');
+  opts.innerHTML = validSizes.map(s => `
+    <button class="size-opt" onclick="pickSize('${name}', '${s.label}', ${s.price})">
+      <span class="size-opt-name">${s.label}</span>
+      <span class="size-opt-price">${s.price} ج</span>
+    </button>
+  `).join('');
+  document.getElementById('sizeOverlay').classList.add('active');
+}
+
+function pickSize(name, label, price) {
+  doAddItem(name + ' - ' + label, price, null);
+  closeSizePickerDirect();
+}
+
+function closeSizePicker(e) {
+  if (e.target === document.getElementById('sizeOverlay')) closeSizePickerDirect();
+}
+
+function closeSizePickerDirect() {
+  document.getElementById('sizeOverlay').classList.remove('active');
+}
+
+function doAddItem(name, price, btn) {
   const existing = cart.find(i => i.name === name);
   if (existing) {
     existing.qty++;
@@ -975,14 +1093,11 @@ function addItem(name, price) {
     cart.push({ name, price, qty: 1 });
   }
   updateCartBadge();
-
-  // Flash button - نحفظ مرجع الزرار صح
-  btn.textContent = '✓';
-  btn.classList.add('added');
-  setTimeout(() => {
-    btn.textContent = '+';
-    btn.classList.remove('added');
-  }, 800);
+  if (btn) {
+    btn.textContent = '✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = '+'; btn.classList.remove('added'); }, 800);
+  }
 }
 
 function updateCartBadge() {
@@ -1177,7 +1292,7 @@ ${payText}
     const payParam = selectedPayment === 'vodafone' ? 'vodafone' : 'cash';
 
     // رابط صفحة التأكيد - انت بتحط اسم الدليفري ورقمه
-    const confirmBase = `https://zhsnahmd6-a11y.github.io/elbarka.io/confirm.html`;
+    const confirmBase = `https://zhsnahmd6-a11y.github.io/Al-Baraka-Restaurant.oi/confirm.html`;
     const confirmParams = `?name=${encodeURIComponent(name)}&oid=${oid}&time=${encodeURIComponent(timeNow)}&pay=${payParam}&total=${grandTotal}`;
 
     // رسالة Telegram للصاحب فيها التعليمات
